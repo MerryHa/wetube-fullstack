@@ -1,4 +1,4 @@
-export const trending = (req, res) => res.render("home"); //렌더할 뷰 이름을 넣어준다.
+export const trending = (req, res) => res.render("home", { pageTitle: "Home", name: "Noma" });
 export const see = (req, res) => res.render("watch");
 
 export const edit = (req, res) => res.render("edit");
