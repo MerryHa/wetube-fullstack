@@ -1,4 +1,4 @@
-export const trending = (req, res) => res.send("Home Page Videos");
+export const trending = (req, res) => res.render("home"); //렌더할 뷰 이름을 넣어준다.
 export const see = (req, res) => {
     return res.send(`Watch Video #${req.params.id}`);
 }
