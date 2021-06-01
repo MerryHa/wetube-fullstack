@@ -1,5 +1,7 @@
 extends base.pug
 block content 
+    if err 
+        span=err
     form(method="POST")
         input(name="title" placeholder="Title",required,type="text")
         input(name="description" placeholder="Description",required,type="text")
