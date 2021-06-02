@@ -33,9 +33,7 @@ export const postEdit = async (req, res) => {
     await Video.findByIdAndUpdate(id, { //❗ Video는 Model이다.
         title,
         description,
-        hashtags: hashtags
-            .split(",")
-            .map(word => word.startsWith("#") ? word : `#${word}`)
+        hashtags: Video.formatHashtags(hashtags),
     });
     return res.redirect(`/videos/${id}`); //브라우저가 자동으로 우리가 준 url로 이동하게 하는 것
 }
@@ -48,7 +46,7 @@ export const postUpload = async (req, res) => {
         await Video.create({
             title,
             description,
-            hashtags: hashtags.split(",").map(word => word.startsWith("#") ? word : `#${word}`),
+            hashtags: Video.formatHashtags(hashtags),
         });
         return res.redirect("/");
     } catch (err) {
