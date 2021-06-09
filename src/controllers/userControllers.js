@@ -122,6 +122,7 @@ export const finishGithubLogin = async (req, res) => {
         if (!user) {
             user = await User.create({
                 name: userData.name,
+                avatarUrl: userData.avatar_url,
                 username: userData.login,
                 email: emailObj.email,
                 password: "",
@@ -137,7 +138,9 @@ export const finishGithubLogin = async (req, res) => {
         return res.redirect("/login"); //임시 ->이후엔 에러 notification 보여주면서 redirect
     }
 };
+export const logout = (req, res) => {
+    req.session.destroy();
+    return res.redirect("/");
+};
 export const edit = (req, res) => res.send("Edit User");
-export const remove = (req, res) => res.send("Remove User");
-export const logout = (req, res) => res.send("Log out");
 export const see = (req, res) => res.send("See User");
