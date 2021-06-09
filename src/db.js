@@ -5,7 +5,6 @@ mongoose.connect(process.env.DB_URL, {
     useFindAndModify: false,
     useCreateIndex: true,
 });
-console.log(process.env.COOKIE_SECRET);
 const db = mongoose.connection;
 
 const handleOpen = () => console.log("✅ Connected to DB");

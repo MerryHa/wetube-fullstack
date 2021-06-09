@@ -7,7 +7,6 @@ import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 import { localsMiddleware } from './middlewares';
 
-console.log(process.env.DB_URL);
 const app = express();
 const logger = morgan("dev");
 
@@ -27,7 +26,7 @@ app.use(
 app.use(localsMiddleware);
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
-app.use("/user", userRouter);
+app.use("/users", userRouter);
 
 export default app;
 
