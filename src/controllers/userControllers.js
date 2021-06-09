@@ -34,10 +34,9 @@ export const postJoin = async (req, res) => {
             errorMessage: error._message,
         });
     }
-}
-export const edit = (req, res) => res.send("Edit User");
-export const remove = (req, res) => res.send("Remove User");
+};
 export const getLogin = (req, res) => res.render("login", { pageTitle: "Login" });
+
 export const postLogin = async (req, res) => {
     const { username, password } = req.body;
     const pageTitle = "Login";
@@ -59,11 +58,11 @@ export const postLogin = async (req, res) => {
                 errorMessage: "Wrong password",
             });
     }
-    //check if account exists
-    //check if password correct
     req.session.loggedIn = true;
     req.session.user = user;
     return res.redirect("/");
 }
 export const logout = (req, res) => res.send("Log out");
 export const see = (req, res) => res.send("See User");
+export const edit = (req, res) => res.send("Edit User");
+export const remove = (req, res) => res.send("Remove User");
