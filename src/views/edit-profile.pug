@@ -1,5 +1,7 @@
 extends base
 block content
+    if error 
+        p=error
     form(method="POST")
         input(type="text", name="name", placeholder="Name", required,value=loggedInUser.name)
         input(type="email", name="email", placeholder="Email", required,value=loggedInUser.email)

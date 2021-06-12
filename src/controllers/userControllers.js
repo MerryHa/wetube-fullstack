@@ -28,9 +28,10 @@ export const postJoin = async (req, res) => {
             username,
             password,
             location,
-        })
+        });
         return res.redirect("/login");
     } catch (error) {
+        console.log(error);
         return res.status(400).render("join", {
             pageTitle: "Join",
             errorMessage: error._message,
@@ -143,9 +144,47 @@ export const logout = (req, res) => {
     return res.redirect("/");
 };
 export const getEdit = (req, res) => {
-    return res.render("edit-profile", { PageTitle: "Edit Profile" });
+    return res.render("edit-profile", { pageTitle: "Edit Profile" });
 }
-export const postEdit = (req, res) => {
-    return res.render("edit-profile");
+//변경 안했을 경우도 생각해야함
+export const postEdit = async (req, res) => {
+    const {
+        session: {
+            user: { _id },
+        },
+        body: { name, email, username, location }
+    } = req;
+    const findUsername = await User.findOne({ username });
+    if (findUsername && findUsername._id != _id) {
+        console.log(findUsername._id, _id);
+        return res.render("edit-profile", {
+            pageTitle: "Edit Profile",
+            error: "This username already exists."
+        })
+    }
+    const findEmail = await User.findOne({ email });
+    if (findEmail && findEmail._id != _id) {
+        return res.render("edit-profile", {
+            pageTitle: "Edit Profile",
+            error: "This email already exists."
+        })
+    }
+    const updatedUser = await User.findByIdAndUpdate(_id, {
+        name,
+        email,
+        username,
+        location
+    }, { new: true })
+    req.session.user = updatedUser;
+    // {new:false} : 이전 데이터를 리턴, {new:true} : 업데이트된 데이터를 리턴
+
+    // req.session.user = {
+    //     ...req.session.user,
+    //     name,
+    //     email,
+    //     username,
+    //     location
+    // };
+    return res.redirect("/users/edit");
 }
 export const see = (req, res) => res.send("See User");
