@@ -156,7 +156,6 @@ export const postEdit = async (req, res) => {
     } = req;
     const findUsername = await User.findOne({ username });
     if (findUsername && findUsername._id != _id) {
-        console.log(findUsername._id, _id);
         return res.render("edit-profile", {
             pageTitle: "Edit Profile",
             error: "This username already exists."
@@ -178,13 +177,35 @@ export const postEdit = async (req, res) => {
     req.session.user = updatedUser;
     // {new:false} : 이전 데이터를 리턴, {new:true} : 업데이트된 데이터를 리턴
 
-    // req.session.user = {
-    //     ...req.session.user,
-    //     name,
-    //     email,
-    //     username,
-    //     location
-    // };
     return res.redirect("/users/edit");
+}
+export const getChangePassword = (req, res) => {
+    return res.render("user/change-password", { pageTitle: "Change Password" });
+}
+export const postChangePassword = async (req, res) => {
+    const {
+        session: {
+            user: { _id }
+        },
+        body: { oldPwd, newPwd, newPwd2 }
+    } = req;
+
+    const user = await User.findById(_id);
+    const ok = await bcrypt.compare(oldPwd, user.password);
+    if (!ok) {
+        return res.status(400).render("user/change-password", {
+            pageTitle: "Change Password",
+            error: "The current password is incorrect."
+        });
+    }
+    if (newPwd !== newPwd2) {
+        return res.status(400).render("user/change-password", {
+            pageTitle: "Change Password",
+            error: "Thw password does not match the confirmation."
+        });
+    }
+    user.password = newPwd;
+    await user.save();
+    return res.redirect("/users/logout");
 }
 export const see = (req, res) => res.send("See User");
