@@ -1,6 +1,6 @@
 import User from '../models/User';
 import fetch from 'node-fetch';
-import bcrypt, { compareSync } from 'bcrypt';
+import bcrypt from 'bcrypt';
 import { token } from 'morgan';
 
 export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
@@ -67,9 +67,9 @@ export const postLogin = async (req, res) => {
 export const startGithubLogin = (req, res) => {
     const baseUrl = 'https://github.com/login/oauth/authorize';
     const config = {
-        client_id: process.env.GH_CLIENT,
-        allow_signup: false,
-        scope: "read:user user:email",
+        client_id: process.env.GH_CLIENT,//깃헙이 어떤 어플에 로그인(회원가입)하는지 알 수 있다.
+        allow_signup: false,//어플에 어떤 종류의 user를 허용 시킬건지 설정
+        scope: "read:user user:email", //user로 뭘 할건지 설정
     }
     const params = new URLSearchParams(config).toString();
     const finalUrl = `${baseUrl}?${params}`;
@@ -142,5 +142,10 @@ export const logout = (req, res) => {
     req.session.destroy();
     return res.redirect("/");
 };
-export const edit = (req, res) => res.send("Edit User");
+export const getEdit = (req, res) => {
+    return res.render("edit-profile", { PageTitle: "Edit Profile" });
+}
+export const postEdit = (req, res) => {
+    return res.render("edit-profile");
+}
 export const see = (req, res) => res.send("See User");
