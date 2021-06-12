@@ -27,6 +27,7 @@ app.use(localsMiddleware);
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
+app.use("/uploads", express.static("uploads"))//디렉토리 내부의 파일을 제공함
 
 export default app;
 

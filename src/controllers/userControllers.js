@@ -150,10 +150,12 @@ export const getEdit = (req, res) => {
 export const postEdit = async (req, res) => {
     const {
         session: {
-            user: { _id },
+            user: { _id, avatarUrl },
         },
-        body: { name, email, username, location }
+        body: { name, email, username, location },
+        file,
     } = req;
+
     const findUsername = await User.findOne({ username });
     if (findUsername && findUsername._id != _id) {
         return res.render("edit-profile", {
@@ -161,6 +163,7 @@ export const postEdit = async (req, res) => {
             error: "This username already exists."
         })
     }
+
     const findEmail = await User.findOne({ email });
     if (findEmail && findEmail._id != _id) {
         return res.render("edit-profile", {
@@ -168,7 +171,9 @@ export const postEdit = async (req, res) => {
             error: "This email already exists."
         })
     }
+
     const updatedUser = await User.findByIdAndUpdate(_id, {
+        avatarUrl: file ? file.path : avatarUrl,
         name,
         email,
         username,
@@ -176,7 +181,6 @@ export const postEdit = async (req, res) => {
     }, { new: true })
     req.session.user = updatedUser;
     // {new:false} : 이전 데이터를 리턴, {new:true} : 업데이트된 데이터를 리턴
-
     return res.redirect("/users/edit");
 }
 export const getChangePassword = (req, res) => {
