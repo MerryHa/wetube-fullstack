@@ -25,4 +25,15 @@ export const publicOnlyMiddleware = (req, res, next) => {
         return res.redirect("/");
     }
 }
-export const uploadFilesMiddleware = multer({ dest: "uploads/" })
+export const avatarUploadMiddleware = multer({
+    dest: "uploads/avatars/",
+    limits: {
+        fileSize: 3000000
+    }
+}) // byte단위
+export const videoUploadMiddleware = multer({
+    dest: "uploads/videos/",
+    limits: {
+        fileSize: 10000000
+    }
+})

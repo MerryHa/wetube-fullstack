@@ -31,7 +31,6 @@ export const postJoin = async (req, res) => {
         });
         return res.redirect("/login");
     } catch (error) {
-        console.log(error);
         return res.status(400).render("join", {
             pageTitle: "Join",
             errorMessage: error._message,
@@ -155,19 +154,18 @@ export const postEdit = async (req, res) => {
         body: { name, email, username, location },
         file,
     } = req;
-
+    const pageTitle = "Edit Profile";
     const findUsername = await User.findOne({ username });
     if (findUsername && findUsername._id != _id) {
         return res.render("edit-profile", {
-            pageTitle: "Edit Profile",
+            pageTitle,
             error: "This username already exists."
         })
     }
-
     const findEmail = await User.findOne({ email });
     if (findEmail && findEmail._id != _id) {
         return res.render("edit-profile", {
-            pageTitle: "Edit Profile",
+            pageTitle,
             error: "This email already exists."
         })
     }
