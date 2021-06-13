@@ -16,19 +16,37 @@ export const watch = async (req, res) => {
 }
 
 export const getEdit = async (req, res) => {
-    const { id } = req.params;
+    const {
+        session: {
+            user: { _id },
+        },
+        params: { id }
+    } = req;
+
     const video = await Video.findById(id); //❗ video는 데이터베이스에서 검색한 영상 object이다.
     if (!video) {
         return res.status(404).render("404", { pageTitle: "Video not found." });
     }
+    if (String(video.owner) !== _id) {
+        return res.status(403).redirect("/");
+    }
     return res.render("edit", { pageTitle: `Editing`, video });
 };
 export const postEdit = async (req, res) => {
-    const { id } = req.params;
-    const { description, title, hashtags } = req.body;
+    const {
+        session: {
+            user: { _id },
+        },
+        params: { id },
+        body: { description, title, hashtags }
+
+    } = req;
     const video = await Video.exists({ _id: id });
     if (!video) {
         return res.status(404).render("404", { pageTitle: "Video not found." });
+    }
+    if (String(video.owner) !== _id) {
+        return res.status(403).redirect("/");
     }
     await Video.findByIdAndUpdate(id, { //❗ Video는 Model이다.
         title,
@@ -68,7 +86,20 @@ export const postUpload = async (req, res) => {
     }
 }
 export const deleteVideo = async (req, res) => {
-    const { id } = req.params;
+    const {
+        session: {
+            user: { _id },
+        },
+        params: { id },
+    } = req;
+    const video = await Video.findById({ id });
+    if (!video) {
+        return res.status(404).render("404", { pageTitle: "Video not found." });
+    }
+    if (String(video.owner) !== _id) {
+        return res.status(403).redirect("/");
+    }
+
     await Video.findByIdAndDelete(id);
     return res.redirect('/');
 }
