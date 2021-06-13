@@ -2,6 +2,7 @@ import User from '../models/User';
 import fetch from 'node-fetch';
 import bcrypt from 'bcrypt';
 import { token } from 'morgan';
+import Video from '../models/Video';
 
 export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 export const postJoin = async (req, res) => {
@@ -213,7 +214,7 @@ export const postChangePassword = async (req, res) => {
 export const see = async (req, res) => {
     //모든 사람이 볼 수 있어야 하므로 (유튜브 채널처럼) 세션이 아니라 url에서 아이디를 받아오자.
     const { id } = req.params;
-    const user = await User.findById(id);
+    const user = await User.findById(id).populate("videos");
     if (!user) {
         return res.status(404).render("404", { pageTitle: "⛔User not found!" })
     }
