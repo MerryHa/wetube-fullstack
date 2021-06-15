@@ -3,13 +3,16 @@ const path = require('path');
 
 module.exports = {
     mode: "development",
-    entry: './src/client/js/main.js',
+    entry: {//여러 js파일을 웹팩에 포함시키려면 오브젝트로 작성하기
+        main: './src/client/js/main.js',
+        videoPlayer: './src/client/js/videoPlayer.js',
+    },
     watch: true,
     plugins: [new MiniCssExtractPlugin({
         filename: "css/styles.css",
     })],
     output: {
-        filename: 'js/main.js',
+        filename: 'js/[name].js',//[name]이라 하면 entry에 있는 이름을 가져옴
         path: path.resolve(__dirname, 'assets'),
         clean: true,
     },
