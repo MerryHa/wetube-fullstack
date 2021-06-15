@@ -16,13 +16,18 @@ video.volume = volumeValue;
 
 
 const handlePlayClick = () => {
+    playOrStopByPaused();
+    playBtn.textContent = video.paused ? "Play" : "Pause";
+};
+
+const playOrStopByPaused = () => {
     if (video.paused) {
         video.play();
     } else {
         video.pause();
     }
-    playBtn.textContent = video.paused ? "Play" : "Pause";
-};
+}
+
 const handleMuteClick = () => {
     if (video.muted) {
         video.muted = false;
@@ -43,20 +48,25 @@ const handleVolumeChange = event => {
     volumeValue = value;
     video.volume = value;
 }
+
 const formatTime = ms => new Date(ms * 1000).toISOString().substr(11, 8);
+
 const handleLoadedMetadata = () => {
     const duration = Math.floor(video.duration);
     totalTime.textContent = formatTime(duration);
     timeline.max = duration;
 }
+
 const handlePlay = () => {
     const current = Math.floor(video.currentTime);
     currentTime.textContent = formatTime(current);
     timeline.value = current;
 }
+
 const handleTimelineChange = () => {
     video.currentTime = timeline.value;
 }
+
 const handleFullscreen = () => {
     const fullscreen = document.fullscreenElement;
     if (fullscreen) {
@@ -83,8 +93,19 @@ const handleMouseMove = () => {
     videoControls.classList.add("showing");
     controlsMovementTimeout = setTimeout(hideControls, 3000);
 }
+
 const handleMouseLeave = () => {
     controlsTimeout = setTimeout(hideControls, 3000);
+}
+
+const handleVideoClick = () => playOrStopByPaused();
+
+const handleKeydown = (event) => {
+    const { code } = event;
+    if (code !== "Enter" && code !== "Space") {
+        return;
+    }
+    playOrStopByPaused();
 }
 
 playBtn.addEventListener("click", handlePlayClick);
@@ -94,5 +115,7 @@ timeline.addEventListener("input", handleTimelineChange);
 fullScreenBtn.addEventListener("click", handleFullscreen);
 video.addEventListener("loadedmetadata", handleLoadedMetadata);
 video.addEventListener("timeupdate", handlePlay);
-video.addEventListener("mousemove", handleMouseMove);
-video.addEventListener("mouseleave", handleMouseLeave);
+videoContainer.addEventListener("mousemove", handleMouseMove);
+videoContainer.addEventListener("mouseleave", handleMouseLeave);
+video.addEventListener("click", handleVideoClick);
+document.addEventListener("keydown", handleKeydown);
