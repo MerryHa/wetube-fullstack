@@ -2,7 +2,9 @@ import User from '../models/User';
 import Video from '../models/Video';
 
 export const home = async (req, res) => {
-    const videos = await Video.find({}).sort({ createdAt: "desc" });
+    const videos = await Video.find({})
+        .sort({ createdAt: "desc" })
+        .populate("owner");
     return res.render("home", { pageTitle: "Home", videos });
 };
 
@@ -12,7 +14,7 @@ export const watch = async (req, res) => {
     if (!video) {
         return res.render("404", { pageTitle: "Video not found." });
     }
-    return res.render("watch", { pageTitle: `Edit: ${video.title}`, video });
+    return res.render("watch", { pageTitle: video.title, video });
 }
 
 export const getEdit = async (req, res) => {
@@ -30,7 +32,7 @@ export const getEdit = async (req, res) => {
     if (String(video.owner) !== _id) {
         return res.status(403).redirect("/");
     }
-    return res.render("edit", { pageTitle: `Editing`, video });
+    return res.render("edit", { pageTitle: `Edit: ${video.title}`, video });
 };
 export const postEdit = async (req, res) => {
     const {
@@ -71,17 +73,17 @@ export const postUpload = async (req, res) => {
             title,
             description,
             fileUrl,
-            hashtags: Video.formatHashtags(hashtags),
             owner: _id,
+            hashtags: Video.formatHashtags(hashtags),
         });
         const user = await User.findById(_id);
         user.videos.push(newVideo._id);
         user.save();
         return res.redirect("/");
-    } catch (err) {
+    } catch (error) {
         return res.status(400).render("upload", {
             pageTitle: "Upload Video",
-            err: err._message,
+            errorMessage: error._message,
         });
     }
 }
@@ -109,9 +111,9 @@ export const search = async (req, res) => {
     if (keyword) {
         videos = await Video.find({
             title: {
-                $regex: new RegExp(keyword, "i"),
+                $regex: new RegExp(`${keyword}$`, "i"),
             },
-        });
+        }).populate("owner");
     }
     return res.render("search", { pageTitle: "Search", videos });
 }

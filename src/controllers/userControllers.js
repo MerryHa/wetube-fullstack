@@ -1,8 +1,6 @@
 import User from '../models/User';
 import fetch from 'node-fetch';
 import bcrypt from 'bcrypt';
-import { token } from 'morgan';
-import Video from '../models/Video';
 
 export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 export const postJoin = async (req, res) => {
@@ -146,7 +144,7 @@ export const logout = (req, res) => {
 export const getEdit = (req, res) => {
     return res.render("edit-profile", { pageTitle: "Edit Profile" });
 }
-//변경 안했을 경우도 생각해야함
+
 export const postEdit = async (req, res) => {
     const {
         session: {
@@ -155,21 +153,22 @@ export const postEdit = async (req, res) => {
         body: { name, email, username, location },
         file,
     } = req;
-    const pageTitle = "Edit Profile";
-    const findUsername = await User.findOne({ username });
-    if (findUsername && findUsername._id != _id) {
-        return res.render("edit-profile", {
-            pageTitle,
-            error: "This username already exists."
-        })
-    }
-    const findEmail = await User.findOne({ email });
-    if (findEmail && findEmail._id != _id) {
-        return res.render("edit-profile", {
-            pageTitle,
-            error: "This email already exists."
-        })
-    }
+
+    // const pageTitle = "Edit Profile";
+    // const findUsername = await User.findOne({ username });
+    // if (findUsername && findUsername._id != _id) {
+    //     return res.render("edit-profile", {
+    //         pageTitle,
+    //         error: "This username already exists."
+    //     })
+    // }
+    // const findEmail = await User.findOne({ email });
+    // if (findEmail && findEmail._id != _id) {
+    //     return res.render("edit-profile", {
+    //         pageTitle,
+    //         error: "This email already exists."
+    //     })
+    // }
 
     const updatedUser = await User.findByIdAndUpdate(_id, {
         avatarUrl: file ? file.path : avatarUrl,
@@ -183,6 +182,9 @@ export const postEdit = async (req, res) => {
     return res.redirect("/users/edit");
 }
 export const getChangePassword = (req, res) => {
+    if (req.session.user.socialOnly === true) {
+        return res.redirect("/");
+    }
     return res.render("user/change-password", { pageTitle: "Change Password" });
 }
 export const postChangePassword = async (req, res) => {
@@ -198,13 +200,13 @@ export const postChangePassword = async (req, res) => {
     if (!ok) {
         return res.status(400).render("user/change-password", {
             pageTitle: "Change Password",
-            error: "The current password is incorrect."
+            errorMessage: "The current password is incorrect."
         });
     }
     if (newPwd !== newPwd2) {
         return res.status(400).render("user/change-password", {
             pageTitle: "Change Password",
-            error: "Thw password does not match the confirmation."
+            errorMessage: "Thw password does not match the confirmation."
         });
     }
     user.password = newPwd;
@@ -214,11 +216,17 @@ export const postChangePassword = async (req, res) => {
 export const see = async (req, res) => {
     //모든 사람이 볼 수 있어야 하므로 (유튜브 채널처럼) 세션이 아니라 url에서 아이디를 받아오자.
     const { id } = req.params;
-    const user = await User.findById(id).populate("videos");
+    const user = await User.findById(id).populate({
+        path: "videos",
+        populate: {
+            path: "owner",
+            model: "User",
+        },
+    });
     if (!user) {
         return res.status(404).render("404", { pageTitle: "⛔User not found!" })
     }
-    return res.render("user/profile", {
+    return res.render("users/profile", {
         pageTitle: user.name,
         user,
     });
