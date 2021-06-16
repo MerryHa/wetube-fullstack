@@ -102,7 +102,7 @@ const handleMouseLeave = () => {
 }
 
 const handleVideoClick = () => playOrStopByPaused();
-
+//클릭 외에는 아이콘 안변하는 버그 존재
 const handleKeydown = (event) => {
     const { code } = event;
     if (code !== "Enter" && code !== "Space") {
@@ -110,15 +110,22 @@ const handleKeydown = (event) => {
     }
     playOrStopByPaused();
 }
+const handleEnded = () => {
+    const { id } = videoContainer.dataset;
+    fetch(`/api/videos/${id}/view`, {
+        method: "POST",
+    })
+}
 
 playBtn.addEventListener("click", handlePlayClick);
 muteBtn.addEventListener("click", handleMuteClick);
 volumeRange.addEventListener("input", handleVolumeChange);
 timeline.addEventListener("input", handleTimelineChange);
 fullScreenBtn.addEventListener("click", handleFullscreen);
+document.addEventListener("keydown", handleKeydown);
 video.addEventListener("loadeddata", handleLoadedMetadata);
 video.addEventListener("timeupdate", handlePlay);
 videoContainer.addEventListener("mousemove", handleMouseMove);
 videoContainer.addEventListener("mouseleave", handleMouseLeave);
 video.addEventListener("click", handleVideoClick);
-document.addEventListener("keydown", handleKeydown);
+video.addEventListener("ended", handleEnded);
