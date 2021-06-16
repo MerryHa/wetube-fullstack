@@ -6,6 +6,7 @@ module.exports = {
     entry: {//여러 js파일을 웹팩에 포함시키려면 오브젝트로 작성하기
         main: './src/client/js/main.js',
         videoPlayer: './src/client/js/videoPlayer.js',
+        recorder: './src/client/js/recorder.js',
     },
     watch: true,
     plugins: [new MiniCssExtractPlugin({
