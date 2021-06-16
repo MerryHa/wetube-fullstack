@@ -182,6 +182,57 @@ input[type=submit],
   color: azure;
 }
 
+#videoContainer {
+  width: 100%;
+  position: relative;
+}
+#videoContainer video {
+  width: 100%;
+}
+#videoContainer .videoControls {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr 4fr 1fr auto;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  width: 95%;
+  opacity: 0;
+  transition: opacity 300 ease-in-out;
+  margin: 0 auto;
+  padding: 10px;
+  gap: 10px;
+  border-radius: 10px;
+  background-color: #0f1117;
+}
+#videoContainer .videoControls.showing {
+  opacity: 1;
+}
+#videoContainer .videoControls .videoControls__play {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+#videoContainer .videoControls .videoControls__play .videoControls__playBtn {
+  margin: 0px 15px;
+}
+#videoContainer .videoControls .videoControls__play .videoControls__time {
+  font-size: 12px;
+}
+#videoContainer .videoControls .videoControls__volume {
+  display: flex;
+  align-items: center;
+}
+#videoContainer .videoControls .videoControls__volume span {
+  margin-left: 10px;
+}
+#videoContainer .videoControls .videoControls__volume span i {
+  font-size: 20px;
+}
+
 .search__form {
   margin-bottom: 60px;
   display: flex;
