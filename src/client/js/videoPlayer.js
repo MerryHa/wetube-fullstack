@@ -18,17 +18,22 @@ let volumeValue = 0.5;
 video.volume = volumeValue;
 
 
-const handlePlayClick = () => {
-    playOrStopByPaused();
-    playBtnIcon.classList = video.paused ? "fas fa-play" : "fas fa-pause";
-};
-
 const playOrStopByPaused = () => {
     if (video.paused) {
         video.play();
+        playBtnIcon.classList = "fas fa-pause";
     } else {
         video.pause();
+        playBtnIcon.classList = "fas fa-play";
     }
+}
+
+const handleKeydown = (event) => {
+    const { code } = event;
+    if (code !== "Enter" && code !== "Space") {
+        return;
+    }
+    playOrStopByPaused();
 }
 
 const handleMuteClick = () => {
@@ -70,15 +75,16 @@ const handleTimelineChange = () => {
     video.currentTime = timeline.value;
 }
 
-const handleFullscreen = () => {
+const handleFullscreenClick = () => {
+    const fullscreen = document.fullscreenElement;
+    fullscreen ? document.exitFullscreen() : videoContainer.requestFullscreen();
+}
+const handleFullscreenChange = () => {
     const fullscreen = document.fullscreenElement;
     if (fullscreen) {
-        document.exitFullscreen();
-        fullScreenBtnIcon.classList = "fas fa-expand";
-        //esc버튼으로 나가면 텍스트가 안변하는 버그 존재
-    } else {
-        videoContainer.requestFullscreen();
         fullScreenBtnIcon.classList = "fas fa-compress";
+    } else {
+        fullScreenBtnIcon.classList = "fas fa-expand";
     }
 }
 
@@ -101,15 +107,6 @@ const handleMouseLeave = () => {
     controlsTimeout = setTimeout(hideControls, 3000);
 }
 
-const handleVideoClick = () => playOrStopByPaused();
-//클릭 외에는 아이콘 안변하는 버그 존재
-const handleKeydown = (event) => {
-    const { code } = event;
-    if (code !== "Enter" && code !== "Space") {
-        return;
-    }
-    playOrStopByPaused();
-}
 const handleEnded = () => {
     const { id } = videoContainer.dataset;
     fetch(`/api/videos/${id}/view`, {
@@ -117,15 +114,16 @@ const handleEnded = () => {
     })
 }
 
-playBtn.addEventListener("click", handlePlayClick);
+playBtn.addEventListener("click", playOrStopByPaused);
 muteBtn.addEventListener("click", handleMuteClick);
 volumeRange.addEventListener("input", handleVolumeChange);
 timeline.addEventListener("input", handleTimelineChange);
-fullScreenBtn.addEventListener("click", handleFullscreen);
+fullScreenBtn.addEventListener("click", handleFullscreenClick);
 document.addEventListener("keydown", handleKeydown);
 video.addEventListener("loadeddata", handleLoadedMetadata);
 video.addEventListener("timeupdate", handlePlay);
 videoContainer.addEventListener("mousemove", handleMouseMove);
 videoContainer.addEventListener("mouseleave", handleMouseLeave);
-video.addEventListener("click", handleVideoClick);
+video.addEventListener("click", playOrStopByPaused);
 video.addEventListener("ended", handleEnded);
+document.addEventListener("fullscreenchange", handleFullscreenChange);
