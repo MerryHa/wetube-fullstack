@@ -38,3 +38,28 @@ main {
   margin: 0 auto;
   margin-top: 50px;
 }
+
+@keyframes goAway {
+  from {
+    transform: none;
+  }
+  to{
+    transform: translateY(-90px);
+    opacity: 0;
+  }
+}
+.message{
+  position: absolute;
+  top: 90px;
+  left:0;
+  right:0;
+  text-align: center;
+  animation: goAway 300ms ease-in-out forwards;
+  animation-delay: 3000ms;
+}
+
+.message span{
+  background-color: tomato;
+  border-radius: 8px;
+  padding: 10px 20px;
+}

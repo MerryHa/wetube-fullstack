@@ -48,6 +48,7 @@ export const postEdit = async (req, res) => {
         return res.status(404).render("404", { pageTitle: "Video not found." });
     }
     if (String(video.owner) !== _id) {
+        req.flash("You are not the owner of the video.");
         return res.status(403).redirect("/");
     }
     await Video.findByIdAndUpdate(id, { //❗ Video는 Model이다.
@@ -55,6 +56,7 @@ export const postEdit = async (req, res) => {
         description,
         hashtags: Video.formatHashtags(hashtags),
     });
+    req.flash("info", "Changes saved.");
     return res.redirect(`/videos/${id}`); //브라우저가 자동으로 우리가 준 url로 이동하게 하는 것
 }
 export const getUpload = (req, res) => {
@@ -100,6 +102,7 @@ export const deleteVideo = async (req, res) => {
         return res.status(404).render("404", { pageTitle: "Video not found." });
     }
     if (String(video.owner) !== _id) {
+        req.flash("error", "Not authorized");
         return res.status(403).redirect("/");
     }
 

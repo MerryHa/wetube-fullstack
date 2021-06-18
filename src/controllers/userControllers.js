@@ -84,7 +84,6 @@ export const finishGithubLogin = async (req, res) => {
     const params = new URLSearchParams(config).toString();
     const finalUrl = `${baseUrl}?${params}`;
 
-    //fetch로 데이터 받아오기
     const tokenRequest = await (
         await fetch(finalUrl, {
             method: "POST",
@@ -115,7 +114,7 @@ export const finishGithubLogin = async (req, res) => {
         ).json();
         const emailObj = emailData.find(email => email.primary === true && email.verified === true);
         if (!emailObj) {
-            return res.redirect("/login"); //임시
+            return res.redirect("/login");
         }
         let user = await User.findOne({ email: emailObj.email });
         if (!user) {
@@ -134,10 +133,12 @@ export const finishGithubLogin = async (req, res) => {
         return res.redirect("/");
 
     } else {
-        return res.redirect("/login"); //임시 ->이후엔 에러 notification 보여주면서 redirect
+        req.flash("error", "Access token does not exist. ");
+        return res.redirect("/login");
     }
 };
 export const logout = (req, res) => {
+    // req.flash("info", "Bye Bye");
     req.session.destroy();
     return res.redirect("/");
 };
@@ -183,6 +184,7 @@ export const postEdit = async (req, res) => {
 }
 export const getChangePassword = (req, res) => {
     if (req.session.user.socialOnly === true) {
+        req.flash("error", "Can't change password");
         return res.redirect("/");
     }
     return res.render("user/change-password", { pageTitle: "Change Password" });
@@ -211,6 +213,7 @@ export const postChangePassword = async (req, res) => {
     }
     user.password = newPwd;
     await user.save();
+    req.flash("info", "Password updated");
     return res.redirect("/users/logout");
 }
 export const see = async (req, res) => {
