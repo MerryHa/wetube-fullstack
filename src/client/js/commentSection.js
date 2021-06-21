@@ -1,16 +1,29 @@
 const videoContainer = document.querySelector("#videoContainer");
 const form = document.querySelector("#commentForm");
-const textarea = document.querySelector("#commentForm textarea");
 const btn = document.querySelector("#commentForm button");
 
-const handleSubmit = async (e) => {
-    e.preventDefault();
+const addComment = (text) => {
+    const videoComments = document.querySelector(".video__comments ul");
+    const newComment = document.createElement("li");
+    newComment.className = "video__comment";
+    const icon = document.createElement("i");
+    icon.className = "fas fa-comment";
+    const span = document.createElement("span");
+    span.textContent = `  ${text}`;
+    newComment.appendChild(icon);
+    newComment.appendChild(span);
+    console.log(newComment);
+    videoComments.prepend(newComment);
+}
+const handleSubmit = async (event) => {
+    event.preventDefault();
+    const textarea = document.querySelector("#commentForm textarea");
     const text = textarea.value;
     const videoId = videoContainer.dataset.id;
     if (text === "") {
         return;
     }
-    await fetch(`/api/videos/${videoId}/comment`, {
+    const { status } = await fetch(`/api/videos/${videoId}/comment`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -18,7 +31,10 @@ const handleSubmit = async (e) => {
         body: JSON.stringify({ text }),
     });
     textarea.value = "";
-    window.location.reload(); //async await으로 실시간"처럼" 보이게 해줌
+    if (status === 201) {
+        addComment(text);
+    }
 };
-
-form.addEventListener("submit", handleSubmit);
+if (form) {
+    form.addEventListener("submit", handleSubmit);
+}

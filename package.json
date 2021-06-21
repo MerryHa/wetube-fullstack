@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/MerryHa/wetube-reloaded#readme",
   "dependencies": {
+    "@babel/runtime": "^7.14.6",
     "@ffmpeg/core": "^0.8.5",
     "@ffmpeg/ffmpeg": "^0.9.7",
     "bcrypt": "^5.0.1",
@@ -36,6 +37,7 @@
   "devDependencies": {
     "@babel/core": "^7.14.3",
     "@babel/node": "^7.14.2",
+    "@babel/plugin-transform-runtime": "^7.14.5",
     "@babel/preset-env": "^7.14.2",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.2.6",
