@@ -49,7 +49,7 @@ export const postEdit = async (req, res) => {
         return res.status(404).render("404", { pageTitle: "Video not found." });
     }
     if (String(video.owner) !== _id) {
-        req.flash("You are not the owner of the video.");
+        req.flash("error", "You are not the owner of the video.");
         return res.status(403).redirect("/");
     }
     await Video.findByIdAndUpdate(id, { //❗ Video는 Model이다.
@@ -107,7 +107,7 @@ export const deleteVideo = async (req, res) => {
         return res.status(403).redirect("/");
     }
 
-    await Video.findByIdAndDelete(id);
+    await Video.findByIdAndDelete(id);//유저가 갖고 있는 비디오 정보는 안삭제됨 고치기⛔
     return res.redirect('/');
 }
 export const search = async (req, res) => {
@@ -150,6 +150,22 @@ export const createComment = async (req, res) => {
         video: id,
     });
     video.comments.push(comment._id);
-    video.save();
-    return res.sendStatus(201);
+    await video.save();
+    return res.status(201).json({ newCommentId: comment._id });
 }
+export const deleteComment = async (req, res) => {
+    const {
+        params: { id: commentId },
+        session: { user },
+        body: videoId,
+    } = req;
+    const findComment = await Comment.findOne({ _id: commentId }).populate("owner");
+    if (String(findComment.owner._id) !== user._id) {
+        return res.sendStatus(404);
+    }
+    await Comment.findByIdAndRemove(commentId);
+    const video = await Video.findById(videoId);
+    video.comments = video.comments.filter(x => x != commentId);
+    await video.save();
+    return res.sendStatus(200);
+};
