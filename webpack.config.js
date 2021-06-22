@@ -4,14 +4,12 @@ const path = require('path');
 const BASE_JS = "./src/client/js/";
 
 module.exports = {
-    mode: "development",
     entry: {//여러 js파일을 웹팩에 포함시키려면 오브젝트로 작성하기
         main: BASE_JS + 'main.js',
         videoPlayer: BASE_JS + 'videoPlayer.js',
         recorder: BASE_JS + 'recorder.js',
         commentSection: BASE_JS + 'commentSection.js',
     },
-    watch: true,
     plugins: [new MiniCssExtractPlugin({
         filename: "css/styles.css",
     })],
