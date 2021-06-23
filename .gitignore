@@ -3,3 +3,5 @@
 /uploads
 /assets
 /build
+assets/css/*
+assets/js/*

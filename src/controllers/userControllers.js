@@ -155,24 +155,23 @@ export const postEdit = async (req, res) => {
         file,
     } = req;
 
-    // const pageTitle = "Edit Profile";
-    // const findUsername = await User.findOne({ username });
-    // if (findUsername && findUsername._id != _id) {
-    //     return res.render("edit-profile", {
-    //         pageTitle,
-    //         error: "This username already exists."
-    //     })
-    // }
-    // const findEmail = await User.findOne({ email });
-    // if (findEmail && findEmail._id != _id) {
-    //     return res.render("edit-profile", {
-    //         pageTitle,
-    //         error: "This email already exists."
-    //     })
-    // }
-
+    const pageTitle = "Edit Profile";
+    const findUsername = await User.findOne({ username });
+    if (findUsername && findUsername._id != _id) {
+        return res.render("edit-profile", {
+            pageTitle,
+            error: "This username already exists."
+        })
+    }
+    const findEmail = await User.findOne({ email });
+    if (findEmail && findEmail._id != _id) {
+        return res.render("edit-profile", {
+            pageTitle,
+            error: "This email already exists."
+        })
+    }
     const updatedUser = await User.findByIdAndUpdate(_id, {
-        avatarUrl: file ? file.path : avatarUrl,
+        avatarUrl: file ? file.location : avatarUrl,
         name,
         email,
         username,
