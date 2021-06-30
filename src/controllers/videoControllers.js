@@ -1,3 +1,4 @@
+import { CodeStarNotifications } from 'aws-sdk';
 import Comment from '../models/Comment';
 import User from '../models/User';
 import Video from '../models/Video';
@@ -99,7 +100,7 @@ export const deleteVideo = async (req, res) => {
         },
         params: { id },
     } = req;
-    const video = await Video.findById({ id });
+    const video = await Video.findById(id);
     if (!video) {
         return res.status(404).render("404", { pageTitle: "Video not found." });
     }
