@@ -11,7 +11,7 @@ form:not(.video__comment-form){
 
 input:not(input[type="range"]){
   all: unset;
-  padding: 15px 20px;
+  padding: 8px 20px;
   border-radius: 5px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   background-color: $bg;
@@ -33,7 +33,7 @@ input[type="submit"],
   padding: 15px 20px;
   background-color: white !important;
   color: $red !important;
-  text-align: center;
+  text-align: center !important;
   display: block;
   border: none;
   &:hover{
