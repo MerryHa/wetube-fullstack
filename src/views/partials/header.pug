@@ -2,11 +2,12 @@ header
     a(href="/").header__logo
         i.fab.fa-youtube
         span nomatube
+    form(method="GET", action="/search").search__form
+                    input(placeholder="Search by title",name="keyword", type="text")
+                    button
+                        i.fas.fa-search
     nav
-        ul
-            li
-                a(href="/search")
-                    i.fas.fa-search
+        ul    
             if loggedIn
                 li
                     a(href="/videos/upload") Upload Video

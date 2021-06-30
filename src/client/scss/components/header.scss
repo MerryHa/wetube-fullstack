@@ -4,7 +4,6 @@ header {
     z-index: 1;
     padding: 20px 50px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     background-color: $darkGray;
     .header__logo {
@@ -16,6 +15,22 @@ header {
         color:white;
         font-size: 30px;
         font-weight: 500;
+      }
+    }
+    .search__form{
+      text-transform: none;
+      width: 100%;
+      input{
+        margin-bottom: 0 !important;
+        padding:10px 20px;
+        cursor: text !important;
+        &:focus{
+          border:1px solid $point;
+        }
+      }
+      button i{
+        font-size: 20px;
+        margin-bottom: 2px;
       }
     }
     ul {
