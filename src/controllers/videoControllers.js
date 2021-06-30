@@ -96,20 +96,23 @@ export const postUpload = async (req, res) => {
 export const deleteVideo = async (req, res) => {
     const {
         session: {
-            user: { _id },
+            user: { _id: userId },
         },
-        params: { id },
+        params: { id: videoId },
     } = req;
-    const video = await Video.findById(id);
+    const video = await Video.findById(videoId);
     if (!video) {
         return res.status(404).render("404", { pageTitle: "Video not found." });
     }
-    if (String(video.owner) !== _id) {
+    if (String(video.owner) !== userId) {
         req.flash("error", "Not authorized");
         return res.status(403).redirect("/");
     }
-
-    await Video.findByIdAndDelete(id);//유저가 갖고 있는 비디오 정보는 안삭제됨 고치기⛔
+    const user = await User.findById(userId);
+    const deleted = user.videos.filter(x => x != videoId);
+    user.videos = deleted;
+    await user.save();
+    await Video.findByIdAndDelete(videoId);
     return res.redirect('/');
 }
 export const search = async (req, res) => {
