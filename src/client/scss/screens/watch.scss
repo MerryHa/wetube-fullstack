@@ -1,36 +1,76 @@
 .video__data {
-    margin-top: 20px;
+    margin: 20px auto;
+    width: 60%;
     display: flex;
     flex-direction: column;
     .video__title {
         font-size: 26px;
         margin-bottom: 5px;
     }
-    .video__createdAt {
-        font-size: 12px;
+    .data__box{
+        display: flex;
+        justify-content: space-between;
+        .video__createdAt {
+            font-size: 12px;
+        }
+        .video__owner {
+            margin-bottom: 5px;
+            font-size: 14px;
+            a {
+            color: cornflowerblue;
+            }
+        }
     }
-    .video__owner {
-        margin-bottom: 5px;
-        font-size: 14px;
-        a {
-        color: cornflowerblue;
-        text-decoration: underline;
+    .video__btn-box{
+        display: flex;
+        margin-top: 10px;
+        button{
+            background-color: transparent;
+            border-style: none;
+        }
+        a{
+            font-size: 24px;
+            color: white;
         }
     }
 }
-  
-.video__comments {
-    display: flex;
-    flex-direction: column;
-    max-width: 320px;
-    width: 100%;
-    margin: 0 auto;
-    margin-top: 20px;
-    .video__comment {
-      padding: 10px;
-      border-radius: 9999px;
-      background-color: white;
-      color: black;
-      margin-bottom: 10px;
+.video__comments-box{
+    width: 60%; 
+    background-color: $gray;
+    padding: 20px;
+    margin: 8px auto;
+    border-radius: 8px;
+    h2{
+        font-weight: bold;
     }
-  }
+    .video__comment-form{
+        display: flex;
+        width: 100% ;
+        margin-top: 10px;
+        input{
+            width: 100%;
+            font-size: 18px;
+            margin-bottom: 0;
+            cursor:text;
+        }
+        button{
+            width: 100px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+    }
+    .video__comments {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin: 0 auto;
+        margin-top: 20px;
+        .video__comment {
+          padding: 10px;
+          border-radius: 9999px;
+          background-color: white;
+          color: black;
+          margin-bottom: 10px;
+        }
+      }
+}

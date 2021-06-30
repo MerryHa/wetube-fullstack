@@ -22,8 +22,8 @@ const addComment = (text, id) => {
 }
 const handleSubmit = async (event) => {
     event.preventDefault();
-    const textarea = document.querySelector("#commentForm textarea");
-    const text = textarea.value;
+    const input = document.querySelector("#commentForm input");
+    const text = input.value;
     const videoId = videoContainer.dataset.id;
     if (text === "") {
         return;
@@ -36,7 +36,7 @@ const handleSubmit = async (event) => {
         body: JSON.stringify({ text }),
     });
     if (response.status === 201) {
-        textarea.value = "";
+        input.value = "";
         const { newCommentId } = await response.json();
         addComment(text, newCommentId);
     }

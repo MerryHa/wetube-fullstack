@@ -16,36 +16,42 @@ block content
                     span#totalTime 00:00
             input(type="range",value=0,step=1,min=0)#timeline.videoControls__timeline
             div.videoControls__volume
-                input(type="range",value=0.5,step=0.1,min=0, max=1)#volume
                 span#mute 
                     i.fas.fa-volume-up 
+                input(type="range",value=0.5,step=0.1,min=0, max=1)#volume
             div 
                 button#fullScreen
                     i.fas.fa-expand
     
     div.video__data
-        p.video__title=video.title
-        small.video__owner Upload by
-            a(href=`/users/${video.owner._id}`)=video.owner.name
-        small.video__createdAt=new Date(video.createdAt).toLocaleDateString("ko-kr", {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})
-        if String(video.owner._id) === String(loggedInUser._id)
-            a(href=`${video.id}/edit`) Edit Video &rarr;
-            br
-            a(href=`${video.id}/delete`) Delete Video &rarr;
+        h2.video__title=video.title
+        div.data__box
+            div
+                p.video__owner Upload by 
+                    a(href=`/users/${video.owner._id}`)=video.owner.name
+                p.video__createdAt=new Date(video.createdAt).toLocaleDateString("ko-kr", {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})
 
-    if loggedIn         
-        div.video__add-comments
-            form.video__comment-form#commentForm
-                textarea(cols="30",rows="10",placeholder="Write a nice comment...")
-                button Add Comment
-    div.video__comments
-        ul 
-            each comment in video.comments.reverse() 
-                li.video__comment(data-id=comment._id)
-                    i.fas.fa-comment
-                    span   #{comment.text}
-                    if String(loggedInUser._id)===String(comment.owner._id) 
-                        span#removeBtn.remove   ❌ 
+            if String(video.owner._id) === String(loggedInUser._id)
+                div.video__btn-box
+                    button.btn__edit 
+                        a(href=`${video.id}/edit`).fas.fa-edit
+                    button.btn__delete 
+                        a(href=`${video.id}/delete`).fas.fa-trash
+    div.video__comments-box
+        h2 Comments
+        if loggedIn         
+            div.video__add-comments
+                form.video__comment-form#commentForm
+                    input(type="text" placeholder="Write a nice comment!")
+                    button.fas.fa-arrow-right 
+        div.video__comments
+            ul 
+                each comment in video.comments.reverse() 
+                    li.video__comment(data-id=comment._id)
+                        i.fas.fa-comment
+                        span   #{comment.text}
+                        if String(loggedInUser._id)===String(comment.owner._id) 
+                            span#removeBtn.remove   ❌ 
                     
 block scripts 
     script(src="/static/js/videoPlayer.js")
