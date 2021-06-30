@@ -57,7 +57,7 @@ const handleVolumeChange = event => {
     video.volume = value;
 }
 
-const formatTime = ms => new Date(ms * 1000).toISOString().substr(11, 8);
+const formatTime = ms => new Date(ms * 1000).toISOString().substr(14, 5);
 
 const handleLoadedMetadata = () => {
     const duration = Math.floor(video.duration);
@@ -121,6 +121,7 @@ timeline.addEventListener("input", handleTimelineChange);
 fullScreenBtn.addEventListener("click", handleFullscreenClick);
 document.addEventListener("keydown", handleKeydown);
 video.addEventListener("loadeddata", handleLoadedMetadata);
+video.addEventListener("play", handleLoadedMetadata);
 video.addEventListener("timeupdate", handlePlay);
 videoContainer.addEventListener("mousemove", handleMouseMove);
 videoContainer.addEventListener("mouseleave", handleMouseLeave);
