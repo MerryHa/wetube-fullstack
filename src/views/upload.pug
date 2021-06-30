@@ -3,7 +3,8 @@ extends base.pug
 block content
     div.upload__container
         div.upload__video
-            video#preview
+            div.preview__container
+                video#preview
             button#actionBtn.social__btn Start Recording
         if errorMessage
             span=errorMessage

@@ -32,6 +32,18 @@ body {
   background-color: $bg;
   color: white;
 }
+body::-webkit-scrollbar{
+  width:20px;
+}
+body::-webkit-scrollbar-thumb{
+  background-color: $gray;
+  border-radius: 8px;
+  border:5px solid $bg;
+}
+body::-webkit-scrollbar-track{
+  background-color: $bg;
+  border-radius: 8px;
+}
 
 main {
   max-width: 1200px;
@@ -40,15 +52,6 @@ main {
   margin-top: 50px;
 }
 
-@keyframes goAway {
-  from {
-    transform: none;
-  }
-  to{
-    transform: translateY(-90px);
-    opacity: 0;
-  }
-}
 .message{
   position: absolute;
   top: 90px;
@@ -63,4 +66,14 @@ main {
   background-color: tomato;
   border-radius: 8px;
   padding: 10px 20px;
+}
+
+@keyframes goAway {
+  from {
+    transform: none;
+  }
+  to{
+    transform: translateY(-90px);
+    opacity: 0;
+  }
 }
