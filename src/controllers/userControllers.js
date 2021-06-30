@@ -64,9 +64,11 @@ export const postLogin = async (req, res) => {
     return res.redirect("/");
 }
 export const startGithubLogin = (req, res) => {
+    const isHeroku = process.env.NODE_ENV === "production";
+    console.log(isHeroku);
     const baseUrl = 'https://github.com/login/oauth/authorize';
     const config = {
-        client_id: process.env.GH_CLIENT,//깃헙이 어떤 어플에 로그인(회원가입)하는지 알 수 있다.
+        client_id: isHeroku ? process.env.GH_CLIENT : process.env.GH_DEV_CLIENT,//깃헙이 어떤 어플에 로그인(회원가입)하는지 알 수 있다.
         allow_signup: false,//어플에 어떤 종류의 user를 허용 시킬건지 설정
         scope: "read:user user:email", //user로 뭘 할건지 설정
     }
@@ -75,10 +77,11 @@ export const startGithubLogin = (req, res) => {
     return res.redirect(finalUrl);
 }
 export const finishGithubLogin = async (req, res) => {
+    const isHeroku = process.env.NODE_ENV === "production";
     const baseUrl = "https://github.com/login/oauth/access_token";
     const config = {
-        client_id: process.env.GH_CLIENT,
-        client_secret: process.env.GH_SECRET,
+        client_id: isHeroku ? process.env.GH_CLIENT : process.env.GH_DEV_CLIENT,
+        client_secret: isHeroku ? process.env.GH_SECRET : process.env.GH_DEV_SECRET,
         code: req.query.code,
     };
     const params = new URLSearchParams(config).toString();
