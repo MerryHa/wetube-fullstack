@@ -1,15 +1,10 @@
-# Wetube Reloaded
-/ -> Home
-/join  -> Join
-/login -> Login
-/search -> Search
+# **Nomatube 🎬**
+**[Live Demo✨](https://nomatube.herokuapp.com/)**
+### 💎 Stack
+    : NodeJS, express, MongoDB, mongoose, pug, webpack, SCSS        
+### 🔔 Deploy
+    : Heroku             
+### ⛅ Cloud
+    : AWS S3
 
-/users/:id -> See User
-/users/logout -> Log Out
-/users/edit -> Edit MY Profile
-/users/delete -> Delete MY Profile
-
-/videos/:id -> See Video
-/videos/:id/edit -> Edit Video
-/videos/:id/delete -> Delete Video
-/videos/upload -> Upload Video
+풀스택을 공부하기 위해 [Nomad Coder](https://nomadcoders.co/?gclid=Cj0KCQjw7pKFBhDUARIsAFUoMDb1TwK2zj8dCIFKwKwGlHWa5BhiH0ARsE2f1ijfwOz8xhiFjMCGMF8aAjc2EALw_wcB)의 강의를 따라 진행한 클론 프로젝트로, 따로 자세한 리드미는 작성하지 않습니다.
